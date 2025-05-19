@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Samuel
+      preConditions:
+        - onFail: CONTINUE
+        - tableExists:
+            tableName: cliente
+      changes:
+        - insert:
+            tableName: cliente
+            columns:
+              - column:
+                  name: email
+                  value: "davajonas@gmail.com"
+              - column:
+                  name: nome
+                  value: "Davy Jones"
+              - column:
+                  name: cpf
+                  value: "67429942075"
