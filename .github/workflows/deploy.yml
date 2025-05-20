@@ -39,7 +39,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=tech-challenge-fiap-9soat_tech-challenge-fastfood-pedido
+        run: mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=tech-challenge-fiap-9soat_tech-challenge-fastfood-pedido
 
       - name: Login no Docker Hub
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
@@ -62,7 +62,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }} # TODO PEGAR CHAVE
+          key: ${{ secrets.EC2_KEY }}
           script: |
             # Clonar ou atualizar o repositório
             if [ ! -d "/home/ubuntu/tech-challenge-fastfood-pedido" ]; then
