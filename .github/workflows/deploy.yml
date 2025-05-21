@@ -96,8 +96,8 @@ jobs:
 
             # Expor o serviço usando NodePort
             echo "Expondo o serviço na porta 30003..."
-            kubectl patch service fastfoodapi-service -p '{"spec": {"type": "NodePort", "ports": [{"port": 8080, "targetPort": 8080, "nodePort": 30001}]}}'
+            kubectl patch service fastfoodapi-pedido-service -p '{"spec": {"type": "NodePort", "ports": [{"port": 8080, "targetPort": 8080, "nodePort": 30003}]}}'
 
             # Verificar se o serviço está exposto corretamente
             echo "Verificando se o serviço está exposto..."
-            kubectl get service fastfoodapi-service
+            kubectl get service fastfoodapi-pedido-service

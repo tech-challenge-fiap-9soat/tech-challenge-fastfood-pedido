@@ -37,7 +37,7 @@ Este repositório é responsavel pelos processos de pedido, cliente e produto de
  kubectl apply -f k8s-infra/fastfoodapi/fastfoodapi-pedido-service.yaml & 
  kubectl apply -f k8s-infra/hpa/fastfoodapi-hpa.yaml
 ```
-3. A aplicação estará disponível em http://localhost:30001/fastfood/swagger-ui/index.html
+3. A aplicação estará disponível em http://localhost:30003/fastfood/swagger-ui/index.html
 4. Segue abaixo ordem indicada para o uso das APIs:
     1. cliente-controller (cadastro e busca de clientes)
     2. produto-controller (cadastro, atualização, busca e deleção de produtos
