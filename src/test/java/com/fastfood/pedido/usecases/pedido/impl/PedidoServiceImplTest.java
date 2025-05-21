@@ -5,6 +5,7 @@ import com.fastfood.pedido.domain.entities.PedidoEntity;
 import com.fastfood.pedido.domain.entities.ProdutoEntity;
 import com.fastfood.pedido.domain.exception.BusinessException;
 import com.fastfood.pedido.gateways.http.PagamentoHttpClient;
+import com.fastfood.pedido.gateways.http.ProducaoHttpClient;
 import com.fastfood.pedido.gateways.repository.ClienteGateway;
 import com.fastfood.pedido.gateways.repository.PedidoGateway;
 import com.fastfood.pedido.gateways.repository.ProdutoGateway;
@@ -32,6 +33,8 @@ class PedidoServiceImplTest {
     private ClienteGateway clienteGateway;
     @Mock
     private PagamentoHttpClient pagamentoHttpClient;
+    @Mock
+    private ProducaoHttpClient producaoHttpClient;
     @InjectMocks
     private PedidoServiceImpl pedidoService;
     private PedidoEntity pedido;
@@ -93,7 +96,6 @@ class PedidoServiceImplTest {
 
         PedidoEntity pedidoExistente = new PedidoEntity();
         pedidoExistente.setStatusPedido(StatusPedido.RECEBIDO);
-//        pedidoExistente.setStatusPagamento("APROVADO");
 
         when(pedidoGateway.findById(id)).thenReturn(Optional.of(pedidoExistente));
         when(produtoGateway.findAllByIdIn(dto.getProdutosId())).thenReturn(List.of(produto));
@@ -126,7 +128,6 @@ class PedidoServiceImplTest {
 
         PedidoEntity pedidoExistente = new PedidoEntity();
         pedidoExistente.setStatusPedido(StatusPedido.EM_PREPARACAO);
-//        pedidoExistente.setStatusPagamento("APROVADO");
 
         when(pedidoGateway.findById(id)).thenReturn(Optional.of(pedidoExistente));
         when(produtoGateway.findAllByIdIn(dto.getProdutosId())).thenReturn(List.of(produto));

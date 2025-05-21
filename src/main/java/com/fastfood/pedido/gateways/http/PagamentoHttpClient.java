@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 public class PagamentoHttpClient {
 
-    @Value("${external.api.pagamento-base-url}") //TODO definir endpoint
+    @Value("${external.api.pagamento.url}")
     private String pagamentoBaseUrl;
 
     private final WebClient webClient;
