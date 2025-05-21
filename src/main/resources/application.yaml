@@ -22,7 +22,7 @@ external:
     pagamento:
       url: http://localhost:30001/
     producao:
-      url: http://localhost:30001/fastfood-producao
+      url: http://localhost:30002/fastfood-producao
       path:
         post: "/pedido"
         patch: "/pedido/{id}/status/{statusPedido}"

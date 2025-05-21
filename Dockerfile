@@ -1,6 +1,6 @@
 FROM openjdk:21-jdk-slim-buster
 
-COPY ./target/fastfood-*.jar application.jar
+COPY ./target/pedido-*.jar application.jar
 
 EXPOSE 8080
 
