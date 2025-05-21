@@ -26,7 +26,6 @@ public class CadastraClienteImpl implements CadastraCliente {
         cliente.setNome(clienteDTO.getNome());
         cliente.setEmail(clienteDTO.getEmail());
         cliente.setCpf(CpfUtils.removerPontuacoes(clienteDTO.getCpf()));
-
         return cliente;
     }
 }
