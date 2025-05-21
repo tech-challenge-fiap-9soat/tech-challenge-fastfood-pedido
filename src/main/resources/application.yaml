@@ -2,9 +2,9 @@ spring:
   application:
     name: pedido
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: 1234
+    url: ${FASTFOOD_JDBC_URL}
+    username: ${FASTFOOD_DB_USER}
+    password: ${FASTFOOD_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
