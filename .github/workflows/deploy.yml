@@ -92,7 +92,7 @@ jobs:
             kubectl apply -f k8s-infra/env/secret.yaml
             kubectl apply -f k8s-infra/fastfoodapi/fastfoodapi-pedido-deployment.yaml
             kubectl apply -f k8s-infra/fastfoodapi/fastfoodapi-pedido-service.yaml
-            kubectl apply -f k8s-infra/hpa/fastfoodapi-hpa.yaml
+            kubectl apply -f k8s-infra/hpa/fastfoodapi-pedido-hpa.yaml
 
             # Expor o serviço usando NodePort
             echo "Expondo o serviço na porta 30001..."

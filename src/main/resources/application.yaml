@@ -19,7 +19,13 @@ spring:
 external:
   api:
     url: http://localhost:8080/
-    pagamento-base-url: http://localhost:8080/ # TODO definir url correta
+    pagamento:
+      url: http://localhost:30001/
+    producao:
+      url: http://localhost:30001/fastfood-producao
+      path:
+        post: "/pedido"
+        patch: "/pedido/{id}/status/{statusPedido}"
 server:
   servlet:
     context-path: /fastfood

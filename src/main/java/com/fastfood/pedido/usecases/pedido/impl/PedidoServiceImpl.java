@@ -5,10 +5,12 @@ import com.fastfood.pedido.domain.entities.PedidoEntity;
 import com.fastfood.pedido.domain.entities.ProdutoEntity;
 import com.fastfood.pedido.domain.exception.BusinessException;
 import com.fastfood.pedido.gateways.http.PagamentoHttpClient;
+import com.fastfood.pedido.gateways.http.ProducaoHttpClient;
 import com.fastfood.pedido.gateways.repository.ClienteGateway;
 import com.fastfood.pedido.gateways.repository.PedidoGateway;
 import com.fastfood.pedido.gateways.repository.ProdutoGateway;
 import com.fastfood.pedido.infrastructure.dto.PedidoDTO;
+import com.fastfood.pedido.infrastructure.dto.StatusPedidoDTO;
 import com.fastfood.pedido.infrastructure.enums.ExceptionEnum;
 import com.fastfood.pedido.infrastructure.enums.StatusPedido;
 import com.fastfood.pedido.usecases.pedido.PedidoService;
@@ -35,6 +37,9 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private PagamentoHttpClient pagamentoHttpClient;
 
+    @Autowired
+    private ProducaoHttpClient producaoHttpClient;
+
     @Override
     public List<PedidoEntity> listarTodos() {
         return this.pedidoGateway.findAllToDisplay();
@@ -43,7 +48,14 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<PedidoEntity> checkoutPedido(PedidoDTO pedidoDTO) {
         if (pedidoDTO.getProdutosId().isEmpty()) throw new BusinessException(ExceptionEnum.PEDIDO_INVALIDO);
-        return Optional.of(pedidoGateway.save(this.montaPedido(pedidoDTO)));
+        PedidoEntity pedidoEntity = pedidoGateway.save(this.montaPedido(pedidoDTO));
+        producaoHttpClient.adicionarStatusPedido(this.montaStatusPedidoDTO(pedidoEntity));
+        return Optional.of(pedidoEntity);
+    }
+
+    private StatusPedidoDTO montaStatusPedidoDTO(PedidoEntity pedidoEntity) {
+        return new StatusPedidoDTO(pedidoEntity.getId(), pedidoEntity.getCliente().getCpf(),
+                pedidoEntity.getStatusPedido(), pedidoEntity.getCriadoEm());
     }
 
     private PedidoEntity montaPedido(PedidoDTO pedidoDTO) {
@@ -74,6 +86,8 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedidoEntity.setValorTotal(produtos.stream().map(ProdutoEntity::getPreco).reduce(0.0, Double::sum));
 
+        producaoHttpClient.atualizacaoStatusPedido(pedidoEntity.getId(), pedidoEntity.getStatusPedido());
+
         return Optional.of(pedidoGateway.save(pedidoEntity));
     }
 
@@ -89,6 +103,8 @@ public class PedidoServiceImpl implements PedidoService {
         }
 
         pedidoEntity.setStatusPedido(proximaOperacao);
+
+        producaoHttpClient.atualizacaoStatusPedido(pedidoEntity.getId(), pedidoEntity.getStatusPedido());
 
         return Optional.of(pedidoGateway.save(pedidoEntity));
     }
