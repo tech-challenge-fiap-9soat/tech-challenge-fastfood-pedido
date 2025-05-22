@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @Component
 @Slf4j
@@ -27,10 +30,12 @@ public class ProducaoHttpClient {
 
     public void atualizacaoStatusPedido(Long pedidoId, StatusPedido statusPedido) {
         try {
-            webClient.patch().uri(
-                    uriBuilder -> uriBuilder
-                            .path("/pedido/{id}/status/{statusPedido}")
-                            .build(pedidoId, statusPedido.name()))
+            URI uri = UriComponentsBuilder
+                    .fromHttpUrl(producaoBaseUrl)
+                    .path(pathPatch)
+                    .build(pedidoId, statusPedido.name());
+
+            webClient.patch().uri(uri)
                     .retrieve()
                     .toBodilessEntity()
                     .doOnSuccess(response -> log.info("Resposta da aplicação fila de producao: {}", response))

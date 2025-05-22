@@ -20,9 +20,9 @@ external:
   api:
     url: http://localhost:8080/
     pagamento:
-      url: http://localhost:30001/
+      url: http://18.204.157.147:30001/
     producao:
-      url: http://localhost:30002/fastfood-producao
+      url: http://18.204.157.147:30002/fastfood-producao
       path:
         post: "/pedido"
         patch: "/pedido/{id}/status/{statusPedido}"

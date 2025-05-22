@@ -20,7 +20,7 @@ public class PagamentoHttpClient {
 
     public boolean consultaPagamentoAprovado(Long pedidoId) {
         try {
-            return Boolean.TRUE.equals(webClient.get().uri(pagamentoBaseUrl) //TODO montar uri com pedidoId
+            return Boolean.TRUE.equals(webClient.get().uri(pagamentoBaseUrl)
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .doOnSuccess(response -> log.info("Resposta da aplicação de pagamento: {}", response))
