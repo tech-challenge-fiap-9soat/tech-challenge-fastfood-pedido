@@ -1,6 +1,5 @@
 package com.fastfood.pedido.infrastructure.dto;
 
-import com.fastfood.pedido.infrastructure.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
