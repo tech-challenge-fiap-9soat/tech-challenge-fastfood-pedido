@@ -20,11 +20,11 @@ external:
   api:
     url: http://localhost:8080/
     pagamento:
-      url: http://localhost:30001/
+      url: http://fastfood-payments-service:8080/
       path:
         get: "/fastfood/pagamento/{idPedido}"
     producao:
-      url: http://localhost:30002/fastfood
+      url: http://fastfoodapi-producao-service:8080/fastfood
       path:
         post: "/pedido"
         patch: "/pedido/{id}/status/{statusPedido}"
