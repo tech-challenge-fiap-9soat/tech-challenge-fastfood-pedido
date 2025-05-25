@@ -20,7 +20,7 @@ public class StepDefinition {
 
     @When("Recebo um novo pedido")
     public void recebo_um_novo_pedido() {
-        PedidoDTO novoPedido = new PedidoDTO("41389872076", StatusPedido.RECEBIDO, List.of(1L,2L,3L));
+        PedidoDTO novoPedido = new PedidoDTO("41389872076", List.of(1L,2L,3L));
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(novoPedido)

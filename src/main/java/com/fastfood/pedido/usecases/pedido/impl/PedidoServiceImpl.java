@@ -77,10 +77,6 @@ public class PedidoServiceImpl implements PedidoService {
     public Optional<PedidoEntity> alterarPedido(Long id, PedidoDTO pedidoDTO) {
         PedidoEntity pedidoEntity = this.pedidoGateway.findById(id).orElseThrow(IllegalArgumentException::new);
 
-//        if (this.isStatusPedidoAlteravel(pedidoDTO.getStatusPedido(), pedidoEntity)) {
-            pedidoEntity.setStatusPedido(pedidoDTO.getStatusPedido());
-//        }
-
         List<ProdutoEntity> produtos = produtoGateway.findAllByIdIn(pedidoDTO.getProdutosId());
         pedidoEntity.setProdutos(produtos);
 
@@ -96,9 +92,9 @@ public class PedidoServiceImpl implements PedidoService {
         PedidoEntity pedidoEntity = this.pedidoGateway.findById(id).orElseThrow(IllegalArgumentException::new);
         StatusPedido proximaOperacao = pedidoEntity.getStatusPedido().getNext();
 
-        boolean pagamentoAprovado = pagamentoHttpClient.consultaPagamentoAprovado(pedidoEntity.getId());
+        String pagamentoAprovado = pagamentoHttpClient.consultaPagamentoAprovado(pedidoEntity.getId());
 
-        if (StatusPedido.EM_PREPARACAO.equals(proximaOperacao) && !pagamentoAprovado) {
+        if (StatusPedido.EM_PREPARACAO.equals(proximaOperacao) && pagamentoAprovado.equalsIgnoreCase("Reprovado")) {
             throw new BusinessException(ExceptionEnum.PAGAMENTO_PENDENTE, pedidoEntity.getId().toString());
         }
 
@@ -108,11 +104,4 @@ public class PedidoServiceImpl implements PedidoService {
 
         return Optional.of(pedidoGateway.save(pedidoEntity));
     }
-
-//    private boolean isStatusPedidoAlteravel(StatusPedido novoStatusPedido, PedidoEntity pedidoEntity) {
-//        return novoStatusPedido != null &&
-//                pedidoEntity.getStatusPedido() != novoStatusPedido &&
-//                pedidoEntity.getStatusPagamento() != null &&
-//                pedidoEntity.getStatusPagamento().equals("APROVADO");
-//    }
 }

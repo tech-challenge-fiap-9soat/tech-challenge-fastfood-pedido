@@ -12,6 +12,5 @@ import java.util.List;
 @Setter
 public class PedidoDTO {
     private String cpf;
-    private StatusPedido statusPedido;
     private List<Long> produtosId;
 }

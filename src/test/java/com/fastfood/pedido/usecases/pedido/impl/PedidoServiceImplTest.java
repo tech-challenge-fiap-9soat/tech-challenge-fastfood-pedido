@@ -56,7 +56,7 @@ class PedidoServiceImplTest {
 
     @Test
     void checkoutPedido_deveRetornarPedidoSalvo() {
-        PedidoDTO dto = new PedidoDTO("12345678900", StatusPedido.EM_PREPARACAO, List.of(1L, 2L));
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of(1L, 2L));
 
         ClienteEntity cliente = new ClienteEntity();
         ProdutoEntity produto1 = new ProdutoEntity();
@@ -80,7 +80,7 @@ class PedidoServiceImplTest {
 
     @Test
     void checkoutPedido_deveLancarExcecaoQuandoProdutosEstaoVazios() {
-        PedidoDTO dto = new PedidoDTO("12345678900",StatusPedido.CANCELADO,List.of());
+        PedidoDTO dto = new PedidoDTO("12345678900",List.of());
         dto.setProdutosId(List.of());
 
         assertThrows(BusinessException.class, () -> pedidoService.checkoutPedido(dto));
@@ -89,7 +89,7 @@ class PedidoServiceImplTest {
     @Test
     void alterarPedido_deveAtualizarPedidoComSucesso() {
         Long id = 1L;
-        PedidoDTO dto = new PedidoDTO("12345678900", StatusPedido.EM_PREPARACAO, List.of(1L));
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of(1L));
 
         ProdutoEntity produto = new ProdutoEntity();
         produto.setPreco(20.0);
@@ -105,7 +105,7 @@ class PedidoServiceImplTest {
 
         assertTrue(resultado.isPresent());
         PedidoEntity pedido = resultado.get();
-        assertEquals(StatusPedido.EM_PREPARACAO, pedido.getStatusPedido());
+        assertEquals(StatusPedido.RECEBIDO, pedido.getStatusPedido());
         assertEquals(20.0, pedido.getValorTotal());
         assertEquals(1, pedido.getProdutos().size());
     }
@@ -113,7 +113,7 @@ class PedidoServiceImplTest {
     @Test
     void alterarPedido_deveLancarExcecaoQuandoPedidoNaoExiste() {
         when(pedidoGateway.findById(1L)).thenReturn(Optional.empty());
-        PedidoDTO dto = new PedidoDTO("12345678900", StatusPedido.FINALIZADO, List.of());
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of());
 
         assertThrows(IllegalArgumentException.class, () -> pedidoService.alterarPedido(1L, dto));
     }
@@ -121,7 +121,7 @@ class PedidoServiceImplTest {
     @Test
     void alterarPedido_naoDeveAtualizarStatusSeNaoForPermitido() {
         Long id = 1L;
-        PedidoDTO dto = new PedidoDTO("12345678900",StatusPedido.EM_PREPARACAO, List.of(1L));
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of(1L));
 
         ProdutoEntity produto = new ProdutoEntity();
         produto.setPreco(10.0);
@@ -145,7 +145,7 @@ class PedidoServiceImplTest {
         atualizado.setStatusPedido(StatusPedido.EM_PREPARACAO);
 
         when(pedidoGateway.findById(1L)).thenReturn(Optional.of(pedido));
-        when(pagamentoHttpClient.consultaPagamentoAprovado(1L)).thenReturn(true);
+        when(pagamentoHttpClient.consultaPagamentoAprovado(1L)).thenReturn("Aprovado");
         when(pedidoGateway.save(any())).thenReturn(atualizado);
 
         Optional<PedidoEntity> resultado = pedidoService.definirProximaOperacao(1L);
@@ -159,7 +159,7 @@ class PedidoServiceImplTest {
     @Test
     void deveLancarBusinessExceptionQuandoPagamentoNaoAprovadoParaEmPreparacao() {
         when(pedidoGateway.findById(1L)).thenReturn(Optional.of(pedido));
-        when(pagamentoHttpClient.consultaPagamentoAprovado(1L)).thenReturn(false);
+        when(pagamentoHttpClient.consultaPagamentoAprovado(1L)).thenReturn("Reprovado");
 
         BusinessException ex = assertThrows(BusinessException.class, () -> pedidoService.definirProximaOperacao(1L));
         assertEquals("O pagamento do pedido 1 ainda está pendente.", ex.getMessage());
