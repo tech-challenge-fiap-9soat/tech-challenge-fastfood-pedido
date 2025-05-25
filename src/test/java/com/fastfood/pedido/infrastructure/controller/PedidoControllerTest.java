@@ -3,23 +3,23 @@ package com.fastfood.pedido.infrastructure.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fastfood.pedido.domain.entities.PedidoEntity;
 import com.fastfood.pedido.infrastructure.dto.PedidoDTO;
-import com.fastfood.pedido.infrastructure.enums.StatusPedido;
 import com.fastfood.pedido.usecases.pedido.PedidoService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PedidoController.class)
 @Import(PedidoControllerTest.PedidoServiceConfig.class)
@@ -56,7 +56,7 @@ class PedidoControllerTest {
 
     @Test
     void cadastrarPedido_deveRetornarPedidoCriado() throws Exception {
-        PedidoDTO dto = new PedidoDTO("12345678900", StatusPedido.EM_PREPARACAO, List.of(1L));
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of(1L));
         dto.setCpf("12345678900");
         dto.setProdutosId(List.of(1L));
 
@@ -74,7 +74,7 @@ class PedidoControllerTest {
 
     @Test
     void cadastrarPedido_deveRetornarNotFoundSeFalhar() throws Exception {
-        PedidoDTO dto = new PedidoDTO("12345678900", null, List.of(1L));
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of(1L));
 
         when(pedidoService.checkoutPedido(any())).thenReturn(Optional.empty());
 
@@ -86,7 +86,7 @@ class PedidoControllerTest {
 
     @Test
     void alterarPedido_deveRetornarPedidoAtualizado() throws Exception {
-        PedidoDTO dto = new PedidoDTO("12345678900", StatusPedido.RECEBIDO, List.of(1L));
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of(1L));
         dto.setCpf("12345678900");
         dto.setProdutosId(List.of(1L));
 
@@ -104,7 +104,7 @@ class PedidoControllerTest {
 
     @Test
     void alterarPedido_deveRetornarNotFoundSeFalhar() throws Exception {
-        PedidoDTO dto = new PedidoDTO("12345678900", StatusPedido.RECEBIDO, List.of(1L));
+        PedidoDTO dto = new PedidoDTO("12345678900", List.of(1L));
 
         when(pedidoService.alterarPedido(eq(99L), any())).thenReturn(Optional.empty());
 
