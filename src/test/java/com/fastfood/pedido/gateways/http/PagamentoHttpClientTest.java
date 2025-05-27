@@ -24,7 +24,8 @@ class PagamentoHttpClientIntegrationTest {
         WebClient webClient = WebClient.builder().baseUrl(baseUrl).build();
         pagamentoHttpClient = new PagamentoHttpClient(webClient);
 
-        setPrivateField(pagamentoHttpClient, "pagamentoBaseUrl", "");
+        setPrivateField(pagamentoHttpClient, "pagamentoBaseUrl", mockWebServer.url("/").toString());
+        setPrivateField(pagamentoHttpClient, "pathStatusPagamento", "/fastfood/pagamento/{idPedido}");
     }
 
     @AfterEach
@@ -33,23 +34,23 @@ class PagamentoHttpClientIntegrationTest {
     }
 
     @Test
-    void deveRetornarTrueQuandoRespostaEhTrue() {
+    void deveRetornarAprovadoQuandoRespostaEhAprovado() {
         mockWebServer.enqueue(new MockResponse()
-                .setBody("true")
+                .setBody("Aprovado")
                 .addHeader("Content-Type", "application/json"));
 
-        boolean resultado = pagamentoHttpClient.consultaPagamentoAprovado(1L);
-        assertTrue(resultado);
+        String resultado = pagamentoHttpClient.consultaPagamentoAprovado(1L);
+        assertEquals("Aprovado", resultado);
     }
 
     @Test
-    void deveRetornarFalseQuandoRespostaEhFalse() {
+    void deveRetornarReprovadoQuandoRespostaEhReprovado() {
         mockWebServer.enqueue(new MockResponse()
-                .setBody("false")
+                .setBody("Reprovado")
                 .addHeader("Content-Type", "application/json"));
 
-        boolean resultado = pagamentoHttpClient.consultaPagamentoAprovado(2L);
-        assertFalse(resultado);
+        String resultado = pagamentoHttpClient.consultaPagamentoAprovado(2L);
+        assertEquals("Reprovado", resultado);
     }
 
     @Test
