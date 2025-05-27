@@ -54,8 +54,13 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     private StatusPedidoDTO montaStatusPedidoDTO(PedidoEntity pedidoEntity) {
-        return new StatusPedidoDTO(pedidoEntity.getId(), pedidoEntity.getCliente().getCpf(),
-                pedidoEntity.getStatusPedido(), pedidoEntity.getValorTotal(), pedidoEntity.getCriadoEm());
+        StatusPedidoDTO statusPedidoDTO = new StatusPedidoDTO();
+        statusPedidoDTO.setId(pedidoEntity.getId());
+        if(pedidoEntity.getCliente() != null) statusPedidoDTO.setCpf(pedidoEntity.getCliente().getCpf());
+        statusPedidoDTO.setStatusPedido(pedidoEntity.getStatusPedido());
+        statusPedidoDTO.setValorTotal(pedidoEntity.getValorTotal());
+
+        return statusPedidoDTO;
     }
 
     private PedidoEntity montaPedido(PedidoDTO pedidoDTO) {
