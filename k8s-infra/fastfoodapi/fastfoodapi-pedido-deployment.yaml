@@ -22,17 +22,17 @@ spec:
             - name: FASTFOOD_JDBC_URL
               valueFrom:
                 secretKeyRef:
-                  name: secret-config
+                  name: secret-config-pedido
                   key: FASTFOOD_JDBC_URL
             - name: FASTFOOD_DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: secret-config
+                  name: secret-config-pedido
                   key: FASTFOOD_DB_USER
             - name: FASTFOOD_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret-config
+                  name: secret-config-pedido
                   key: FASTFOOD_DB_PASSWORD
           resources:
             requests:
