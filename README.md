@@ -24,6 +24,10 @@ Este repositório é responsavel pelos processos de pedido, cliente e produto de
     - Password: `1234`
 ---
 
+## Cobertura de testes
+
+![img.png](img.png)
+
 # Passo a passo para execução
 
 1. Após realizar o clone do projeto deve-se primeiro se atentar as versões do java e do maven suportadas pelo projeto de acordo com o tópico **Ambiente de Desenvolvimento** acima;
