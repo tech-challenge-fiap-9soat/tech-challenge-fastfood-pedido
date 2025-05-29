@@ -26,6 +26,7 @@ Este repositório é responsavel pelos processos de pedido, cliente e produto de
 
 ## Cobertura de testes
 
+![img_1.png](img_1.png)
 ![img.png](img.png)
 
 # Passo a passo para execução
